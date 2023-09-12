@@ -1,21 +1,23 @@
-export class Field {
-    canvas: HTMLCanvasElement;
-    ctx: CanvasRenderingContext2D;
+import { Sheep } from "./Sheep";
 
-    constructor(canvasName: string) {
-        this.canvas = <HTMLCanvasElement> document.getElementById(canvasName);
-        if (!this.canvas) {
-            throw new Error(`Canvas element with id '${canvasName}' not found.`);
-        }
-        this.ctx = this.canvas.getContext('2d') as unknown as CanvasRenderingContext2D;
-        if (!this.ctx) {
-            throw new Error('Canvas 2D context is not available.');
-        }
+export class Field {
+    htmlElement: HTMLElement;
+
+    constructor(divId: string, sheepCount: number = 10) {
+        this.htmlElement = document.getElementById(divId) as HTMLElement;
+        this.htmlElement.style.width = "800px";
+        this.htmlElement.style.height = "530px";
         this.paint();
+        for (let i = 0; i < sheepCount; i++) {
+            new Sheep(Math.random() * 800, Math.random() * 530, this);
+        }
     }
 
     paint() {
-        this.ctx.fillStyle = '#000000';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.htmlElement.style.backgroundColor = "green";
+    }
+
+    public insert(element: HTMLElement) {
+        this.htmlElement.appendChild(element);
     }
 }
