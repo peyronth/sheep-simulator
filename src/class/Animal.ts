@@ -39,8 +39,6 @@ export class Animal {
         this.updatePosition();
     }
 
-    
-
     randomMove() {
         const randomness: number = 0.2;
         this._rotation += (Math.random() - 0.5) * randomness;
@@ -48,15 +46,27 @@ export class Animal {
     }
 
     move(speedFactor: number = 1) {
-        this._x += Math.cos(this._rotation) * this.speed * speedFactor;
-        this._y += Math.sin(this._rotation) * this.speed * speedFactor;
-        this.updatePosition();
+        const bufferX : number = this._x + Math.cos(this._rotation) * this.speed * speedFactor;
+        const bufferY : number = this._y + Math.sin(this._rotation) * this.speed * speedFactor;
+        if(bufferX > 0 && bufferX < this.field.width && bufferY > 0 && bufferY < this.field.height){
+            this._x = bufferX;
+            this._y = bufferY;
+            this.updatePosition();
+        }else{
+            this._rotation += Math.PI/2;
+        }
     }
 
     updatePosition() {
         this.htmlElement.style.left = `${this._x}px`;
         this.htmlElement.style.top = `${this._y}px`;
-        this.htmlElement.style.transform = `rotate(${this._rotation + Math.PI/2}rad)`;
+        this.htmlElement.style.transform = `rotate(${(this._rotation + Math.PI/2)/(2*Math.PI)}rad)`;
 
+    }
+
+    public distanceTo(animal: Animal): number {
+        const directionX = animal._x - this._x;
+        const directionY = animal._y - this._y;
+        return Math.sqrt(directionX * directionX + directionY * directionY);
     }
 }
