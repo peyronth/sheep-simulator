@@ -2,6 +2,7 @@ import { Sheep } from "./Sheep";
 
 export class Field {
     htmlElement: HTMLElement;
+    sheep: Sheep[] = [];
 
     constructor(divId: string, sheepCount: number = 10) {
         this.htmlElement = document.getElementById(divId) as HTMLElement;
@@ -17,7 +18,8 @@ export class Field {
         this.htmlElement.style.backgroundColor = "green";
     }
 
-    public insert(element: HTMLElement) {
+    public insertSheep(element: HTMLElement, sheep: Sheep) {
         this.htmlElement.appendChild(element);
+        this.sheep.push(sheep);
     }
 }

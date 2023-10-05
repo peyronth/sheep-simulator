@@ -1,53 +1,48 @@
 import { Field } from "./Field";
+import { Animal } from "./Animal";
 
-export class Sheep {
-    private _x: number;
-    private _y: number;
-    private _rotation: number = 0;
-    private htmlElement: HTMLElement;
-    private field: Field;
-
-    private width: number = 30;
-    private height: number = 30;
-    private speed: number = 1;
+export class Sheep extends Animal {
+    public attractiveSheep: Sheep|null = null;
 
     constructor(x: number, y: number, field: Field) {
-        this._x = x;
-        this._y = y;
-        this.field = field;
-        this.htmlElement = document.createElement("span");
-        this.htmlElement.style.left = `${this._x}px`;
-        this.htmlElement.style.top = `${this._y}px`;
-        this.htmlElement.classList.add("sheep");
-        this.htmlElement.innerHTML = "&nbsp;";
-        this.field.insert(this.htmlElement);
-        this._rotation = Math.random() * 2 * Math.PI;
-        this.updatePosition();
+        super(x, y, field);
+        this.field.insertSheep(this.htmlElement, this);
         this.handler();
     }
 
+    calculateAttraction() {
+        let closestSheep = null;
+        let closestDistance = Infinity;
+
+        for (let sheep of this.field.sheep) {
+            if (sheep !== this) {
+                let directionX = sheep._x - this._x;
+                let directionY = sheep._y - this._y;
+                let distance = Math.sqrt(directionX * directionX + directionY * directionY);
+
+                if (distance < 100) {
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestSheep = sheep;
+                    }
+                }
+            }
+        }
+        if(closestSheep && Math.abs(closestSheep._rotation-this._rotation) < 1 && closestSheep.attractiveSheep !== this) {
+            this._rotation = (this._rotation + closestSheep._rotation) / 2;
+            this.attractiveSheep = closestSheep;
+            return true;
+        }
+        this.attractiveSheep = null;
+        return false;
+    }
+
     handler() {
-        this.randomMove();
-        setTimeout(() => this.handler(), 1000 / 30);
+        if(this.calculateAttraction()){
+            this.move(0.4);
+        }else{
+            this.randomMove();
+        }
+        requestAnimationFrame(() => this.handler());
     }
-
-    randomMove() {
-        this._rotation += (Math.random() - 0.5) * 0.5;
-        this.move(0.4);
-    }
-
-    move(speedFactor: number = 1) {
-        this._x += Math.cos(this._rotation) * this.speed * speedFactor;
-        this._y += Math.sin(this._rotation) * this.speed * speedFactor;
-        this.updatePosition();
-    }
-
-    updatePosition() {
-        this.htmlElement.style.left = `${this._x}px`;
-        this.htmlElement.style.top = `${this._y}px`;
-        this.htmlElement.style.transform = `rotate(${this._rotation}rad)`;
-
-    }
-
-
 }
