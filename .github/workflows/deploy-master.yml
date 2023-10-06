@@ -1,11 +1,11 @@
-name: Deploy prod website on push
+name: Deploy website on push
 on:
   push:
     branches:
       - master
 jobs:
   web-deploy:
-    name: Deploy Prod
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
@@ -15,9 +15,9 @@ jobs:
       with:
         node-version: '18'
     - name: 🏗️ Build
-      run: npm install
+      run: npm install && npm run build
     - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: /
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: build/
           
