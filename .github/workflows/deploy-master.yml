@@ -15,9 +15,11 @@ jobs:
       with:
         node-version: '18'
     - name: 🏗️ Build
-      run: npm install && npm run build
+      run: |
+        npm install
+        npm run build
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: build/
+        folder: build
           
