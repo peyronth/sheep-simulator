@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "./build",
+        "outDir": "./buildProd",
         "rootDir": "./src",
         "strict": true,
         "esModuleInterop": true,
