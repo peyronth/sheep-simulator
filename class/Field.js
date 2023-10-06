@@ -1,4 +1,4 @@
-import { Sheep } from "./Sheep";
+import { Sheep } from "./Sheep.js";
 var Field = /** @class */ (function () {
     function Field(divId, sheepCount) {
         if (sheepCount === void 0) { sheepCount = 10; }

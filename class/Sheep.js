@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Animal } from "./Animal";
+import { Animal } from "./Animal.js";
 import * as math from "./../library/math.js";
 var Sheep = /** @class */ (function (_super) {
     __extends(Sheep, _super);
