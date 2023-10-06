@@ -13,8 +13,8 @@
     "build": "npm run buildTSC && npm run buildCSS && npm run buildHTML",
     "buildWindows": "npm run buildTSC && npm run buildCSSWindows && npm run buildHTMLWindows",
     "buildTSC" : "tsc",
-    "buildCSS": "cp -r css/* build/css/",
-    "buildHTML": "cp /index.html build/",
+    "buildCSS": "cp -r /css/ /build/css/",
+    "buildHTML": "cp /index.html /build/",
     "buildCSSWindows": "xcopy /i /y css\\* build\\css\\",
     "buildHTMLWindows": "xcopy /i /y index.html build\\"
   },
