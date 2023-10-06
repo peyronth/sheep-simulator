@@ -17,9 +17,9 @@ jobs:
     - name: 🏗️ Build
       run: |
         npm install
-        npm run buildProd
+        npm run build
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: buildProd
+        folder: build
           
