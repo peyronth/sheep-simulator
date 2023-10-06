@@ -1,4 +1,4 @@
-import { Sheep } from "./Sheep";
+import { Sheep } from "./Sheep.js";
 
 export class Field {
     private htmlElement: HTMLElement;
