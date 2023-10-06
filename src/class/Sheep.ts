@@ -1,5 +1,5 @@
-import { Field } from "./Field";
-import { Animal } from "./Animal";
+import { Field } from "./Field.js";
+import { Animal } from "./Animal.js";
 import * as math from "./../library/math.js"
 
 
