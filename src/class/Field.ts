@@ -2,14 +2,14 @@ import { Sheep } from "./Sheep.js";
 import { Animal } from "./Animal.js";
 
 export class Field {
-    private htmlElement: HTMLElement;
+    public htmlElement: HTMLElement;
     public animals: Animal[] = [];
     public sheep: Sheep[] = [];
     public width: number = 800;
     public height: number = 530;
-    private _paused: boolean = false;
+    private _paused: boolean = true;
 
-    constructor(divId: string, sheepCount: number = 10) {
+    constructor(divId: string, sheepCount: number = 3) {
         this.htmlElement = document.getElementById(divId) as HTMLElement;
         this.htmlElement.style.width = this.width.toString() + "px";
         this.htmlElement.style.height = this.height.toString() + "px";

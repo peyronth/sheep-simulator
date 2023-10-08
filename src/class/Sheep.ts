@@ -11,7 +11,6 @@ export class Sheep extends Animal {
     constructor(x: number, y: number, field: Field) {
         super(x, y, field);
         this.field.insertSheep(this.htmlElement, this);
-        this.handler();
     }
 
     /**
@@ -57,15 +56,5 @@ export class Sheep extends Animal {
         }
         this.attractiveSheep = null;
         return false;
-    }
-
-    public handler() {
-        this.calculateAttraction();
-        if(this.attractiveSheep){
-            this.move(0.4 + ((this.distanceTo(this.attractiveSheep)-(this.width))/this.attractiveSheepDistance));
-        }else{
-            this.randomMove();
-        }
-        super.handler();
     }
 }
