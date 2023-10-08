@@ -9,7 +9,7 @@ export class Field {
     public height: number = 530;
     private _paused: boolean = true;
 
-    constructor(divId: string, sheepCount: number = 3) {
+    constructor(divId: string, sheepCount: number = 8) {
         this.htmlElement = document.getElementById(divId) as HTMLElement;
         this.htmlElement.style.width = this.width.toString() + "px";
         this.htmlElement.style.height = this.height.toString() + "px";
@@ -53,6 +53,10 @@ export class Field {
     }
 
     handler() {
+        const elementsToRemove = document.getElementsByClassName("temp_turn")
+        for (let i = elementsToRemove.length - 1; i >= 0; i--) {
+            elementsToRemove[i].remove();
+        }
         for (let animal of this.animals) {
             animal.handler();
         }

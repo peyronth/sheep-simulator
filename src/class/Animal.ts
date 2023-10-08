@@ -23,7 +23,7 @@ export class Animal {
 
     protected width: number = 30;
     protected height: number = 30;
-    protected maxSpeed: number = 120;
+    protected maxSpeed: number = 10;
 
     constructor(x: number, y: number, field: Field) {
         this._x = x;
@@ -59,7 +59,7 @@ export class Animal {
             return true;
         }else{
             const animal = animals.pop();
-            if(animal !== this && animal !== undefined){
+            if(animal !== this && animal !== undefined && animal.distanceTo(this) < this.maxSpeed){
                 if(animal?._x > x - this.width/2 && animal?._x < x + this.width/2 && animal?._y > y - this.width/2 && animal?._y < y + this.width/2){
                     return false;
                 }else{
@@ -86,12 +86,16 @@ export class Animal {
      * @memberof Animal
      */
     generateNextStepPossiblePositions(): Array<{x: number, y: number, rotation: number, speed: number, weight: number}> {
-        const possibleRotations = [-Math.PI/2, -Math.PI/4, 0, Math.PI/4, Math.PI/2];
-        const possibleSpeedFactor = [0.2, 0.5, 0.75, 1];
+        const possibleRotations = [-Math.PI * 0.75, -Math.PI/2, -Math.PI/4, 0, Math.PI/4, Math.PI/2, Math.PI * 0.75];
+        const possibleSpeedFactor = [0.2, 0.5, 1];
         const possiblePositions = Array<{x: number, y: number, rotation: number, speed: number, weight: number}>();
+
+        const randomness = 0.5;
+        const straightWillingness = this.maxSpeed / 20;
+
         for(let rotation of possibleRotations){
             for(let speedFactor of possibleSpeedFactor){
-                const weight = (1-speedFactor) * ((Math.abs(Math.cos(rotation))+1) / 2) + Math.random() * 0.5;
+                const weight = (1-speedFactor) + (Math.abs(rotation)) * -straightWillingness + Math.random() * randomness;
                 speedFactor = speedFactor * ((Math.abs(Math.cos(rotation))+1) / 2);
                 const speed = this.maxSpeed * speedFactor;
                 const bufferX : number = this._x + Math.cos(this._rotation + rotation) * speed;
@@ -124,6 +128,7 @@ export class Animal {
             div.style.fontSize = "10px";
             div.style.left = `${position.x}px`;
             div.style.top = `${position.y}px`;
+            div.classList.add("temp_turn");
             this.field.htmlElement.appendChild(div);
         }
     }
@@ -138,9 +143,9 @@ export class Animal {
     public handler(): void {
         const possiblePositions = this.generateNextStepPossiblePositions();
         let bestPosition = null;
-        let bestWeight = 0;
+        let bestWeight = null;
         for(let position of possiblePositions){
-            if(position.weight > bestWeight){
+            if(bestWeight===null || position.weight > bestWeight){
                 bestWeight = position.weight;
                 bestPosition = position;
             }
