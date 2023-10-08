@@ -59,13 +59,13 @@ export class Sheep extends Animal {
         return false;
     }
 
-    handler() {
+    public handler() {
         this.calculateAttraction();
         if(this.attractiveSheep){
             this.move(0.4 + ((this.distanceTo(this.attractiveSheep)-(this.width))/this.attractiveSheepDistance));
         }else{
             this.randomMove();
         }
-        requestAnimationFrame(() => this.handler());
+        super.handler();
     }
 }

@@ -69,4 +69,8 @@ export class Animal {
         const directionY = animal._y - this._y;
         return Math.sqrt(directionX * directionX + directionY * directionY);
     }
+
+    public handler(): void {
+        this.updatePosition();
+    }
 }
