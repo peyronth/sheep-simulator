@@ -23,7 +23,7 @@ export class Animal {
 
     protected width: number = 30;
     protected height: number = 30;
-    protected maxSpeed: number = 10;
+    protected maxSpeed: number = 25;
 
     constructor(x: number, y: number, field: Field) {
         this._x = x;
@@ -60,7 +60,7 @@ export class Animal {
         }else{
             const animal = animals.pop();
             if(animal !== this && animal !== undefined && animal.distanceTo(this) < this.maxSpeed){
-                if(animal?._x > x - this.width/2 && animal?._x < x + this.width/2 && animal?._y > y - this.width/2 && animal?._y < y + this.width/2){
+                if(animal?._x > x - this.width && animal?._x < x + this.width && animal?._y > y - this.width && animal?._y < y + this.width){
                     return false;
                 }else{
                     return this.checkOtherAnimalsCollision(x, y, animals);
@@ -90,13 +90,14 @@ export class Animal {
         const possibleSpeedFactor = [0.2, 0.5, 1];
         const possiblePositions = Array<{x: number, y: number, rotation: number, speed: number, weight: number}>();
 
-        const randomness = 0.5;
-        const straightWillingness = this.maxSpeed / 20;
+        const randomness = 0.2;
+        /** @type {number} - Coefficient of want perspective go go straight (Allow more turn => improve divisor number) */
+        const straightWillingness = this.maxSpeed / 80;
+        const speedAffection = 0.5;
 
         for(let rotation of possibleRotations){
             for(let speedFactor of possibleSpeedFactor){
-                const weight = (1-speedFactor) + (Math.abs(rotation)) * -straightWillingness + Math.random() * randomness;
-                speedFactor = speedFactor * ((Math.abs(Math.cos(rotation))+1) / 2);
+                const weight = (1-speedFactor) * (10 - speedAffection*10) + (Math.abs(rotation)) * -straightWillingness + Math.random() * randomness;
                 const speed = this.maxSpeed * speedFactor;
                 const bufferX : number = this._x + Math.cos(this._rotation + rotation) * speed;
                 const bufferY : number = this._y + Math.sin(this._rotation + rotation) * speed;
@@ -116,20 +117,26 @@ export class Animal {
     }
 
     drawNextStepPossiblePositions(): void {
-        const possiblePositions = this.generateNextStepPossiblePositions();
+        let possiblePositions = this.generateNextStepPossiblePositions();
+        possiblePositions = this.alterPositionsWeight(possiblePositions);
         for(let position of possiblePositions){
             const div = document.createElement("div");
             div.style.position = "absolute";
             div.style.width = "4px";
             div.style.height = "4px";
             div.style.borderRadius = "2px";
-            div.innerHTML = position.weight.toFixed(2);
-            div.style.backgroundColor = position.weight === 0 ? "red" : "blue";
-            div.style.fontSize = "10px";
+            div.style.backgroundColor = position.weight > 0 ? `rgb(0, 0, ${Math.floor(position.weight*100)})` : `rgb(${Math.floor(-position.weight*10)}, 0, 0)`;
+            div.style.fontSize = "12px";
             div.style.left = `${position.x}px`;
             div.style.top = `${position.y}px`;
             div.classList.add("temp_turn");
             this.field.htmlElement.appendChild(div);
+            if(position.weight >= 0){
+                div.innerHTML = position.weight.toFixed(2);
+            }
+            if(position.speed < (0.4*this.maxSpeed)) {
+                div.style.opacity = "0.5";
+            }
         }
     }
 
@@ -139,9 +146,13 @@ export class Animal {
         return Math.sqrt(directionX * directionX + directionY * directionY);
     }
 
+    alterPositionsWeight(possiblePositions : Array<{x: number, y: number, rotation: number, speed: number, weight: number}>): Array<{x: number, y: number, rotation: number, speed: number, weight: number}> {
+        return possiblePositions;
+    }
 
     public handler(): void {
-        const possiblePositions = this.generateNextStepPossiblePositions();
+        let possiblePositions = this.generateNextStepPossiblePositions();
+        possiblePositions = this.alterPositionsWeight(possiblePositions);
         let bestPosition = null;
         let bestWeight = null;
         for(let position of possiblePositions){

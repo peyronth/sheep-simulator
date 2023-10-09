@@ -7,6 +7,7 @@ export class Field {
     public sheep: Sheep[] = [];
     public width: number = 800;
     public height: number = 530;
+    public speed: number = 10;
     private _paused: boolean = true;
 
     constructor(divId: string, sheepCount: number = 8) {
@@ -25,6 +26,11 @@ export class Field {
         const buttonPause = document.createElement("button");
         const buttonPlay = document.createElement("button");
         const buttonNextStep = document.createElement("button");
+        const simulationSpeed = document.createElement("input");
+        simulationSpeed.type = "range";
+        simulationSpeed.min = "1";
+        simulationSpeed.max = "100";
+        simulationSpeed.value = this.speed.toString();
         buttonPause.innerHTML = "Pause";
         buttonPlay.innerHTML = "Play";
         buttonNextStep.innerHTML = "Next Step";
@@ -37,9 +43,11 @@ export class Field {
             this._paused = true;
             this.handler();
         });
+        simulationSpeed.addEventListener("change", () => this.speed = parseInt(simulationSpeed.value));
         this.htmlElement.insertAdjacentElement("afterend", buttonPause);
         this.htmlElement.insertAdjacentElement("afterend", buttonPlay);
         this.htmlElement.insertAdjacentElement("afterend", buttonNextStep);
+        this.htmlElement.insertAdjacentElement("afterend", simulationSpeed);
     }
 
     paint() {
@@ -61,7 +69,7 @@ export class Field {
             animal.handler();
         }
         if(!this._paused){
-            requestAnimationFrame(() => this.handler());
+            setTimeout(() => this.handler(), (100 - this.speed));
         }
     }
 }
