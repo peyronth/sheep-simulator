@@ -32,9 +32,9 @@ export class Field {
         simulationSpeed.min = "1";
         simulationSpeed.max = "100";
         simulationSpeed.value = this.speed.toString();
-        buttonPause.innerHTML = "Pause";
-        buttonPlay.innerHTML = "Play";
-        buttonNextStep.innerHTML = "Next Step";
+        buttonPause.innerHTML = '<span class="material-symbols-outlined">pause</span>';
+        buttonPlay.innerHTML = '<span class="material-symbols-outlined">play_arrow</span>';
+        buttonNextStep.innerHTML = '<span class="material-symbols-outlined">skip_next</span>';
         buttonPause.addEventListener("click", () => this._paused = true);
         buttonPlay.addEventListener("click", () => {
             this._paused = false;
@@ -45,10 +45,13 @@ export class Field {
             this.handler();
         });
         simulationSpeed.addEventListener("change", () => this.speed = parseInt(simulationSpeed.value));
-        this.htmlElement.insertAdjacentElement("afterend", buttonPause);
-        this.htmlElement.insertAdjacentElement("afterend", buttonPlay);
-        this.htmlElement.insertAdjacentElement("afterend", buttonNextStep);
-        this.htmlElement.insertAdjacentElement("afterend", simulationSpeed);
+        const controls = document.createElement("div");
+        controls.classList.add("controls");
+        controls.insertAdjacentElement("beforeend", buttonPause);
+        controls.insertAdjacentElement("beforeend", buttonPlay);
+        controls.insertAdjacentElement("beforeend", buttonNextStep);
+        controls.insertAdjacentElement("beforeend", simulationSpeed);
+        this.htmlElement.insertAdjacentElement("afterend", controls);
     }
 
     paint() {

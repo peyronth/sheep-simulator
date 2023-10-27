@@ -1,0 +1,27 @@
+#field {
+    position: relative;
+    border: 8px dashed #731104;
+}
+
+.controls button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #1f4b8d;
+    background-color: #d4c9bc;
+    margin: 5px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+.controls button:hover {
+    background-color: #1f4b8d;
+    color: #d4c9bc;
+}
+.controls button:active {
+    background-color: #1f4b8d;
+    color: #d4c9bc;
+    transform: scale(0.9);
+}
+.controls input {
+    visibility: hidden;
+}
