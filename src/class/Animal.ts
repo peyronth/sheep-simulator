@@ -23,7 +23,7 @@ export class Animal {
 
     protected width: number = 30;
     protected height: number = 30;
-    protected maxSpeed: number = 25;
+    protected maxSpeed: number = 40;
 
     constructor(x: number, y: number, field: Field) {
         this._x = x;
@@ -165,6 +165,8 @@ export class Animal {
             this.move(bestPosition.x, bestPosition.y);
         }
         this.updatePosition();
-        this.drawNextStepPossiblePositions();
+        if(this.field._debug){
+            this.drawNextStepPossiblePositions();
+        }
     }
 }

@@ -7,8 +7,9 @@ export class Field {
     public sheep: Sheep[] = [];
     public width: number = 800;
     public height: number = 530;
-    public speed: number = 10;
+    public speed: number = 20;
     private _paused: boolean = true;
+    public _debug: boolean = true;
 
     constructor(divId: string, sheepCount: number = 8) {
         this.htmlElement = document.getElementById(divId) as HTMLElement;

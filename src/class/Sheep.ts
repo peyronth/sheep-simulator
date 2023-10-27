@@ -6,6 +6,7 @@ import * as math from "./../library/math.js"
 export class Sheep extends Animal {
     public attractiveSheep: Sheep[] = [];
     private attractiveSheepDistance: number = 100;
+    private attractiveSheepAngle: number = Math.PI/2;
 
     constructor(x: number, y: number, field: Field) {
         super(x, y, field);
@@ -48,14 +49,17 @@ export class Sheep extends Animal {
 
         for (let sheep of this.field.sheep) {
             if (sheep !== this) {
-                const distance = Math.sqrt(Math.pow(sheep._x - x, 2) + Math.pow(sheep._y - y, 2));
+                const distance:number = Math.sqrt(Math.pow(sheep._x - x, 2) + Math.pow(sheep._y - y, 2));
                 if (distance < this.attractiveSheepDistance) {
-                    this.attractiveSheep.push(sheep);
-                    attirance += (this.attractiveSheepDistance-distance)/this.attractiveSheepDistance;
+                    const rotationDiff:number = math.angleDiff(this._rotation, sheep._rotation) % (2 * Math.PI);
+                    if(rotationDiff < this.attractiveSheepAngle && rotationDiff > -this.attractiveSheepAngle){
+                        console.log(`Sheep ${this.name} is attracted by sheep ${sheep.name} By force ${(this.attractiveSheepDistance-distance)/this.attractiveSheepDistance*5}`)
+                        attirance += (this.attractiveSheepDistance-distance)/this.attractiveSheepDistance;
+                    }
                 }
             }
         }
-        return attirance*5;
+        return attirance*5*(this.maxSpeed/10);
     }
 
     alterPositionsWeight(possiblePositions : Array<{x: number, y: number, rotation: number, speed: number, weight: number}>): Array<{x: number, y: number, rotation: number, speed: number, weight: number}> {
