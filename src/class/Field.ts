@@ -37,8 +37,10 @@ export class Field {
         buttonNextStep.innerHTML = "Next Step";
         buttonPause.addEventListener("click", () => this._paused = true);
         buttonPlay.addEventListener("click", () => {
-            this._paused = false;
-            this.handler();
+            if(this._paused) {
+                this._paused = false;
+                this.handler();
+            }
         });
         buttonNextStep.addEventListener("click", () => {
             this._paused = true;
