@@ -32,7 +32,9 @@ export class Animal {
         this.htmlElement = document.createElement("span");
         this.htmlElement.classList.add("sheep");
         this.name = (Math.floor(Math.random() * 1000)).toString();
-        this.htmlElement.innerHTML = this.name;
+        if(this.field._debug){
+            this.htmlElement.innerHTML = this.name;
+        }
         this._rotation = Math.random() * 2 * Math.PI;
         this.updatePosition();
     }
