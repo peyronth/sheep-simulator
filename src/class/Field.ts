@@ -15,7 +15,6 @@ export class Field {
         this.htmlElement = document.getElementById(divId) as HTMLElement;
         this.htmlElement.style.width = this.width.toString() + "px";
         this.htmlElement.style.height = this.height.toString() + "px";
-        this.paint();
         for (let i = 0; i < sheepCount; i++) {
             new Sheep(Math.random() * 800, Math.random() * 530, this);
         }
@@ -51,10 +50,6 @@ export class Field {
         this.htmlElement.insertAdjacentElement("afterend", buttonPlay);
         this.htmlElement.insertAdjacentElement("afterend", buttonNextStep);
         this.htmlElement.insertAdjacentElement("afterend", simulationSpeed);
-    }
-
-    paint() {
-        this.htmlElement.style.backgroundColor = "green";
     }
 
     public insertSheep(element: HTMLElement, sheep: Sheep) {
